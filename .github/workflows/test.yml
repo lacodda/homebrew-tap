@@ -1,0 +1,45 @@
+name: Test
+
+# Every formula installed the way a user installs it - `brew install
+# lacodda/tap/NAME` - and run, with its aliases.
+on:
+  push:
+    branches: [main]
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    steps:
+      # main, not the commit that started the run: called from Update, the
+      # formulae to prove are the ones it has just pushed.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Put Homebrew on the PATH (Linux)
+        if: runner.os == 'Linux'
+        run: echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+      - name: Install every formula and run it
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+          HOMEBREW_NO_INSTALL_CLEANUP: '1'
+        run: |
+          set -euo pipefail
+          brew tap lacodda/tap "$GITHUB_WORKSPACE"
+          for formula in Formula/*.rb; do
+            name=$(basename "$formula" .rb)
+            brew install "lacodda/tap/$name"
+            brew test "lacodda/tap/$name"
+            for program in $(jq -r --arg name "$name" '.[] | select(.name == $name) | .bin, (.aliases // [])[]' packages.json); do
+              echo "$program: $("$program" --version)"
+            done
+          done
