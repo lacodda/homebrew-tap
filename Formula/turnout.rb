@@ -1,25 +1,25 @@
-# Written by tools/update.py from packages.json and the v1.1.0 release - edit those, not this file.
+# Written by tools/update.py from packages.json and the v1.2.0 release - edit those, not this file.
 class Turnout < Formula
   desc "Point local apps at any backend stand, keep servers and secrets, and deploy"
   homepage "https://lacodda.github.io/turnout/"
-  version "1.1.0"
+  version "1.2.0"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/lacodda/turnout/releases/download/v1.1.0/turnout-v1.1.0-aarch64-apple-darwin.tar.gz"
-      sha256 "f593c9eb5c34ac7d217b863c8aa09ff36ab97505b8f9cfcac03bce330d12b3cd"
+      url "https://github.com/lacodda/turnout/releases/download/v1.2.0/turnout-v1.2.0-aarch64-apple-darwin.tar.gz"
+      sha256 "e1ddbbcd5336e5343e5ec06669e857137d2c103701c68af1e2f34cc0fc6ef93c"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/lacodda/turnout/releases/download/v1.1.0/turnout-v1.1.0-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "dc84ef3a4d9f47583c4a548415f25f55fc2a5a0f692846f6faccf56e6259fd2f"
+      url "https://github.com/lacodda/turnout/releases/download/v1.2.0/turnout-v1.2.0-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "1bdba6b47acb9a090a550d733f24aaef9f6fd9361d441e4c09859edd043c35da"
     end
     on_arm do
-      url "https://github.com/lacodda/turnout/releases/download/v1.1.0/turnout-v1.1.0-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "49f92b598150d08d9ed4b21888254fe25a4bd0aa40cfaf6001f3acb93eb7b95e"
+      url "https://github.com/lacodda/turnout/releases/download/v1.2.0/turnout-v1.2.0-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "0fb03d4cba0f564f33d40c599022248c55b2d6278015a3d4310567e3480714cc"
     end
   end
 
