@@ -2,9 +2,11 @@
 """Write every formula in Formula/ from packages.json and the newest release.
 
 One package is one entry in packages.json: the GitHub repository it is
-released from, how it describes itself, the program and its aliases. The
-formula is never edited by hand - the next run would write over it - so a
-change goes into packages.json or into this script.
+released from, how it describes itself, the program and its aliases, and the
+other programs its archive carries beside it that have to be installed with it
+(`bundled` - kasl's plugins, which kasl looks for beside itself and on the
+PATH). The formula is never edited by hand - the next run would write over it -
+so a change goes into packages.json or into this script.
 
 For each package the newest GitHub release is read, every archive the formula
 needs is downloaded and hashed, and Formula/<name>.rb is rendered. A target
@@ -63,6 +65,7 @@ def render(package, tag, assets):
         sys.exit(f"{package['repo']} {tag} carries no archive this tap installs")
     platforms = "\n\n".join(f"  {os_block} do\n" + "\n".join(arches) + "\n  end" for os_block, arches in blocks.items())
     install = [f'    bin.install "{package["bin"]}"']
+    install += [f'    bin.install "{program}"' for program in package.get("bundled", [])]
     install += [f'    bin.install_symlink "{package["bin"]}" => "{alias}"' for alias in package.get("aliases", [])]
     return f'''# Written by tools/update.py from packages.json and the {tag} release - edit those, not this file.
 class {class_name(name)} < Formula
